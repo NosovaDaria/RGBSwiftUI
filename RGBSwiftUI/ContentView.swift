@@ -69,14 +69,19 @@ struct ColorSlidersView: View {
         .onChange(of: textFieldValue, perform: { newValue in
           if var newValue = Double("0\(newValue)") {
             if (newValue > 255) {
+              alertPresent.toggle()
               newValue = 255
             }
             sliderValue = Double(newValue)
           } else {
-            alertPresent.toggle()
+          alertPresent.toggle()
           }
           textFieldValue = "\(Int(sliderValue))"
         })
+      
+        .alert("Wrong Format", isPresented: $alertPresent, actions: {}) {
+          Text("Enter number less or equal 255")
+        }
         .keyboardType(.numberPad)
         .textFieldStyle(.roundedBorder)
     }
