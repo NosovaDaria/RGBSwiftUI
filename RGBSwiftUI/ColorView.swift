@@ -15,9 +15,13 @@ struct ColorView: View {
         RoundedRectangle(cornerRadius: 6)
           .foregroundColor(color)
           .frame(width: 350, height: 180)
+          .overlay(
+            RoundedRectangle(cornerRadius: 6)
+              .stroke(lineWidth: 2)
+              .foregroundColor(.gray)
+          )
           .padding(.all, 20)
-
-          
+          .shadow(color: Color.gray, radius: 3, x: 1, y: 2)
     }
 }
 
