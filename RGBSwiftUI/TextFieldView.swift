@@ -29,6 +29,7 @@ struct TextFieldView: View {
         })
       
         .keyboardType(.numberPad)
+        .frame(width: 45)
         .textFieldStyle(.roundedBorder)
       
         .alert("Wrong Format", isPresented: $alertPresent, actions: {}) {

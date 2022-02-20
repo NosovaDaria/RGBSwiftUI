@@ -14,7 +14,7 @@ struct SliderView: View {
   
     var body: some View {
       Slider(value: $sliderValue, in: 0...255, step: 1)
-        .accentColor(color).frame(width: 240, height: 2)
+        .accentColor(color).frame(height: 2)
         .onChange(of: sliderValue) { newValue in
           textFieldValue = String(lround(newValue))
         }
