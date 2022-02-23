@@ -8,73 +8,45 @@
 import SwiftUI
 
 struct ContentView: View {
-  @State private var redSliderValue = 174.0
-  @State private var greenSliderValue = 120.0
-  @State private var blueSliderValue = 74.0
-  @State private var alertPresented  = false
+  @State private var red = 174.0
+  @State private var green = 120.0
+  @State private var blue = 74.0
   
+  @FocusState private var focusedField: Bool
   
   var body: some View {
-    VStack {
-      ColorView(color: .init(
-        red: redSliderValue / 255,
-        green: greenSliderValue / 255,
-        blue: blueSliderValue / 255,
-        opacity: 1.0
-      ))
-      ColorSlidersView(
-        sliderValue: $redSliderValue,
-        alertPresent: $alertPresented,
-        textFieldValue: String(lround(redSliderValue)),
-        color: .red
-      )
-      ColorSlidersView(
-        sliderValue: $greenSliderValue,
-        alertPresent: $alertPresented,
-        textFieldValue: String(lround(greenSliderValue)),
-        color: .green
-      )
-      ColorSlidersView(
-        sliderValue: $blueSliderValue,
-        alertPresent: $alertPresented,
-        textFieldValue: String(lround(blueSliderValue)),
-        color: .blue
-      )
-      
-      Spacer()
+    NavigationView {
+      ZStack {
+        Color(#colorLiteral(red: 0, green: 0.3765624762, blue: 0.7304599881, alpha: 1)).ignoresSafeArea()
+        VStack(spacing: 40) {
+          ColorView(red: red, green: green, blue: blue)
+          
+          VStack {
+            SliderView(sliderValue: $red, color: .red)
+            SliderView(sliderValue: $green, color: .green)
+            SliderView(sliderValue: $blue, color: .blue)
+          }
+          .frame(height: 150)
+          .focused($focusedField)
+          .toolbar {
+            ToolbarItemGroup(placement: .keyboard) {
+              Spacer()
+              Button("Done") {
+                focusedField = false
+              }
+            }
+          }
+          Spacer()
+        }
+        .padding()
+      }
     }
   }
 }
-
 struct ContentView_Previews: PreviewProvider {
   static var previews: some View {
-    ContentView()
-  }
-}
-
-struct ColorSlidersView: View {
-  @Binding var sliderValue: Double
-  @Binding var alertPresent: Bool
-  @State var textFieldValue: String
-  
-  let color: Color
-  
-  
-  var body: some View {
-    HStack {
-      Text("\(lround(sliderValue))")
-        .frame(width: 40)
-      SliderView(
-        sliderValue: $sliderValue,
-        textFieldValue: $textFieldValue,
-        color: color
-      )
-      TextFieldView(
-        sliderValue: $sliderValue,
-        alertPresent: $alertPresent,
-        textFieldValue: $textFieldValue
-      )
+    ZStack {
+      ContentView()
     }
-    .padding(.horizontal)
   }
 }

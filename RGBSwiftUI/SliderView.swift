@@ -8,15 +8,35 @@
 import SwiftUI
 
 struct SliderView: View {
+  
   @Binding var sliderValue: Double
-  @Binding var textFieldValue: String
+  @State private var textFieldValue = ""
+  
   let color: Color
   
     var body: some View {
-      Slider(value: $sliderValue, in: 0...255, step: 1)
-        .accentColor(color).frame(height: 2)
-        .onChange(of: sliderValue) { newValue in
-          textFieldValue = String(lround(newValue))
+      HStack {
+        ColorValueTextView(value: sliderValue)
+        
+        Slider(value: $sliderValue, in: 0...255, step: 1)
+          .tint(color)
+          .onChange(of: sliderValue) { isOnFocus in
+            textFieldValue = "\(lround(isOnFocus))"
         }
+        TextFieldView(sliderValue: $sliderValue, textFieldValue: $textFieldValue)
+      }
+      .onAppear {
+        textFieldValue = "\(lround(sliderValue))"
+      }
     }
 }
+
+struct SliderView_Previews: PreviewProvider {
+  static var previews: some View {
+    ZStack {
+      Color.gray
+      SliderView(sliderValue: .constant(100), color: .red)
+    }
+  }
+}
+

@@ -9,31 +9,43 @@ import SwiftUI
 
 struct TextFieldView: View {
   @Binding var sliderValue: Double
-  @Binding var alertPresent: Bool
   @Binding var textFieldValue: String
   
+  @State private var alertPresent = false
+  
+  
     var body: some View {
-      TextField("", text: $textFieldValue)
-        .onChange(of: textFieldValue, perform: { newValue in
-          if var newValue = Double("0\(newValue)") {
-            if (newValue > 255) {
-              alertPresent.toggle()
-              newValue = 255
-            }
-            sliderValue = Double(newValue)
-          } else {
-            alertPresent.toggle()
-          }
-          
-          textFieldValue = String(lround(sliderValue))
-        })
-      
-        .keyboardType(.numberPad)
+      TextField("", text: $textFieldValue) { _ in
+        withAnimation {
+          checkValue()
+        }
+      }
+        .keyboardType(.decimalPad)
         .frame(width: 45)
         .textFieldStyle(.roundedBorder)
-      
         .alert("Wrong Format", isPresented: $alertPresent, actions: {}) {
           Text("Enter number less or equal 255")
         }
     }
+}
+
+extension TextFieldView {
+  private func checkValue() {
+    if let value = Int(textFieldValue), (0...255).contains(value) {
+      self.sliderValue = Double(value)
+      return
+    }
+    alertPresent.toggle()
+    sliderValue = 0
+    textFieldValue = "0"
+  }
+}
+
+struct TextFieldView_Previews: PreviewProvider {
+  static var previews: some View {
+    ZStack {
+      Color.gray
+      TextFieldView(sliderValue: .constant(128.0), textFieldValue: .constant("128"))
+    }
+  }
 }
