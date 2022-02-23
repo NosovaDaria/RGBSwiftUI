@@ -22,7 +22,7 @@ struct SliderView: View {
           .tint(color)
           .onChange(of: sliderValue) { isOnFocus in
             textFieldValue = "\(lround(isOnFocus))"
-        }
+          }
         TextFieldView(sliderValue: $sliderValue, textFieldValue: $textFieldValue)
       }
       .onAppear {

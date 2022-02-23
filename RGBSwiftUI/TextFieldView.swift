@@ -21,7 +21,8 @@ struct TextFieldView: View {
         }
       }
         .keyboardType(.decimalPad)
-        .frame(width: 45)
+        .frame(width: 45, alignment: .trailing)
+        .multilineTextAlignment(.trailing)
         .textFieldStyle(.roundedBorder)
         .alert("Wrong Format", isPresented: $alertPresent, actions: {}) {
           Text("Enter number less or equal 255")
